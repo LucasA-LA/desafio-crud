@@ -22,7 +22,7 @@ export default function Sidebar() {
   return (
     <aside className="w-60 h-screen bg-white border-r flex flex-col items-center py-6 space-y-8">
       <Image
-        src="/logo.png"
+        src="/Logo.jpeg"
         alt="Logo"
         width={100}
         height={100}
