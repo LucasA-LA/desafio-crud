@@ -12,10 +12,10 @@ import {
 
 const menuItems = [
   { label: 'Home', icon: Home, href: '/' },
-  { label: 'Lista', icon: List, href: '/lista' },
-  { label: 'Social', icon: FileText, href: '/social' },
-  { label: 'Request', icon: BarChart, href: '/request' },
-  { label: 'Trash', icon: Smile, href: '/trash' },
+  { label: 'Lista', icon: List, href: '/' },
+  { label: 'Social', icon: FileText, href: '/' },
+  { label: 'Request', icon: BarChart, href: '/' },
+  { label: 'Trash', icon: Smile, href: '/' },
 ]
 
 export default function Sidebar() {

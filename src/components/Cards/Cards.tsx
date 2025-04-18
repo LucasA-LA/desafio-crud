@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface User {
+    id: number;
     name: string;
     title: string;
     email: string;
@@ -11,18 +13,21 @@ interface User {
 
 const initialUsers: User[] = [
     {
+        id: 1,
         name: "Lindsay Walton",
         title: "Front-end Developer",
         email: "lindsay.walton@example.com",
         role: "Member",
     },
     {
+        id: 2,
         name: "Courtney Henry",
         title: "Designer",
         email: "courtney.henry@example.com",
         role: "Admin",
     },
     {
+        id: 3,
         name: "Tom Cook",
         title: "Director of Product",
         email: "tom.cook@example.com",
@@ -66,17 +71,23 @@ const Cards: React.FC = () => {
         }
     };
 
+    const handleDelete = (id: number) => {
+        setUsers(users.filter(user => user.id !== id));
+    };
+
+    const router = useRouter();
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen ">
             <div className="w-11/12 max-w-6xl p-6 rounded-md ">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold">Categoria</h2>
+                <div className="flex justify-between items-center mb-6 text-white">
+                    <h2 className="text-xl font-bold text-black">Categoria</h2>
                     <button
                         className="px-4 py-2 bg-black text-white rounded-md cursor-pointer"
                         onClick={() =>
                             setUsers([
                                 ...users,
                                 {
+                                    id: users.length + 1,
                                     name: "Novo Usuário",
                                     title: "Nova Função",
                                     email: "novo.email@example.com",
@@ -89,15 +100,7 @@ const Cards: React.FC = () => {
                     </button>
                 </div>
 
-                <div className="bg-purple-50 p-4 rounded-md">
-                    <div className="flex justify-between items-center mb-4">
-                        <button className="px-4 py-2 bg-gray-200 rounded-md cursor-pointer">Label</button>
-                        <div className="flex gap-2">
-                            <button className="px-4 py-2 bg-gray-200 rounded-md cursor-pointer">Filtro</button>
-                            <button className="px-4 py-2 bg-gray-200 rounded-md cursor-pointer">Filtro</button>
-                            <button className="px-4 py-2 bg-gray-200 rounded-md cursor-pointer">Filtro</button>
-                        </div>
-                    </div>
+                <div className="bg-blue-950 p-4 rounded-md">
 
                     <table className="w-full text-left">
                         <thead>
@@ -106,17 +109,32 @@ const Cards: React.FC = () => {
                                     <th
                                         key={key}
                                         onClick={() => toggleSort(key)}
-                                        className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
+                                        className="px-6 py-3 text-left text-sm font-medium text-white cursor-pointer"
                                     >
                                         {key.charAt(0).toUpperCase() + key.slice(1)}
                                     </th>
                                 ))}
                             </tr>
+                                <tr>
+                                    {(["name", "title", "email", "role"] as (keyof User)[]).map((key) => (
+                                    <th key={key} className="px-6 py-2">
+                                        <input
+                                        type="text"
+                                        placeholder={`Filtrar ${key}`}
+                                        value={filters[key]}
+                                        onChange={(e) =>
+                                            setFilters({ ...filters, [key]: e.target.value })
+                                        }
+                                        className="w-full px-2 py-1 rounded-md text-white"
+                                        />
+                                    </th>
+                                    ))}
+                                </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody className="divide-y divide-white">
                             {sortedUsers.map((user, index) => (
                                 <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                                         {editingIndex === index ? (
                                             <input
                                                 value={user.name}
@@ -129,7 +147,7 @@ const Cards: React.FC = () => {
                                             <span onClick={() => setEditingIndex(index)}>{user.name}</span>
                                         )}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                                         <input 
                                             value={user.title}
                                             onChange={(e) => handleEdit(index, e.target.value)}
@@ -138,7 +156,7 @@ const Cards: React.FC = () => {
                                             autoFocus
                                         />
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                                         <input 
                                         value={user.email}
                                         onChange={(e) => handleEdit(index, e.target.value)}
@@ -147,7 +165,7 @@ const Cards: React.FC = () => {
                                         autoFocus
                                         />
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                                         <input 
                                         value={user.role}
                                         onChange={(e) => handleEdit(index, e.target.value)}
@@ -155,6 +173,20 @@ const Cards: React.FC = () => {
                                         className="px-2 py-1 border rounded-md"
                                         autoFocus
                                         />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white flex gap-2">
+                                        <button className="bg-gray-200 text-black px-2 py-1 rounded"
+                                        onClick={() => router.push(`/users/${user.id}`)}
+                                      >
+                                        Editar
+                                      </button>
+                                      
+                                        <button
+                                        className="bg-red-600 text-white px-2 py-1 rounded"
+                                        onClick={() => handleDelete(user.id)}
+                                        >
+                                        Delete
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

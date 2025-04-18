@@ -1,7 +1,15 @@
+"use client";
+import { useRouter } from "next/router";
 export default function Home() {
-  return (
-    <main>
+  const Cards = () => {
+    const router = useRouter();
+
+
+      return (
+        <main>
       
+          
     </main>
   )
+}
 }
